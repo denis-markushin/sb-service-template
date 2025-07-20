@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: "@project.name@"
+  datasource:
+    hikari:
+      auto-commit: true
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      idle-timeout: ${DB_IDLE_TIMEOUT:10000}
+      minimum-idle: ${DB_MINIMUM_IDLE:1}
+      maximum-pool-size: ${DB_MAXIMUM_POOL_SIZE:3}
+      connection-timeout: ${DB_CONNECTION_TIMEOUT:2000}
+      validation-timeout: ${DB_VALIDATION_TIMEOUT:1000} # There should be less than Connection-Timeout
+      data-source-properties:
+        ApplicationName: ${spring.application.name}
+  liquibase:
+    change-log: classpath:liquibase/changelog-master.yml
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - "test"
+        - "prod"
+    import: "optional:configserver:http://config-server/"
+  cloud:
+    config:
+      fail-fast: true
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - "local"
+        - "local-int"
+    import: "optional:configserver:http://localhost:8888"
+  cloud:
+    config:
+      fail-fast: false

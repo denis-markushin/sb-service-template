@@ -1,0 +1,16 @@
+spring:
+  docker:
+    compose:
+      enabled: true
+      lifecycle-management: start_only
+      file: docker-compose.yml
+#  security:
+#    oauth2:
+#      resource-server:
+#        jwt:
+#          jwk-set-uri: "http://localhost:9999"
+#  cloud:
+#    stream:
+#      default:
+#        group: ${spring.application.name}.local
+#        content-type: application/json

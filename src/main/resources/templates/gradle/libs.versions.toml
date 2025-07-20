@@ -1,0 +1,19 @@
+[versions]
+dema-platform = "0.0.3"
+
+kotlin = "1.9.24"
+spring-boot = "3.5.3"
+jooq = "3.18.9"
+spotless = "6.25.0"
+ktlint = "1.2.1"
+spring-doc = "2.3.0"
+
+[libraries]
+dema-platform = { module = "io.github.denis-markushin:bom", version.ref = "dema-platform" }
+spring-doc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-doc" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

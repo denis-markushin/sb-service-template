@@ -1,0 +1,16 @@
+**/*.jar
+**/*.bat
+**/*.sh
+**/*.zip
+**/*.gz
+**/*.xz
+**/*.tar
+**/*.7z
+
+gradle/
+.gradle/
+
+gradlew
+gradlew.bat
+
+src/main/resources/application.yml
