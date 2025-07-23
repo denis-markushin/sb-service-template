@@ -18,7 +18,7 @@ gradle cleanArch generate -i -Dtarget=generated -Dgroup=com.xxx.yyy -Dname=dummy
 
 #### Prompted
 
-Following parameters will be asked if not available in system properties
+The Following parameters will be asked if not available in system properties
 
 | Param   | Description                                         | Default      |
 |---------|-----------------------------------------------------|--------------|
