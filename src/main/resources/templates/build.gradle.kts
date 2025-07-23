@@ -71,6 +71,7 @@ tasks.withType<Test> {
 }
 
 spotless {
+    lineEndings = com.diffplug.spotless.LineEnding.UNIX
     kotlin {
         target("**/*.kt")
         targetExclude("${layout.buildDirectory}/**/*.kt")
