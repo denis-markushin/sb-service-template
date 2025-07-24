@@ -8,17 +8,12 @@ plugins {
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.spotless)
+    alias(libs.plugins.kapt)
 }
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
     }
 }
 
@@ -36,6 +31,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-autoconfigure")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-jooq")
 
     // spring cloud
     implementation("org.springframework.cloud:spring-cloud-starter-config")
@@ -43,18 +39,24 @@ dependencies {
     // third party libs
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation(libs.spring.doc)
+    implementation(libs.dema.jooq.utils)
+    implementation(libs.mapstruct.core)
+    implementation(libs.mapstruct.spring)
 
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    kapt(libs.mapstruct.processor)
+    kapt(libs.mapstruct.spring.extensions)
+
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
+    runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -86,9 +88,10 @@ spotless {
 }
 
 tasks.processResources {
-    val substitutionTokens = rootProject.properties
-        .map { "project.${it.key}" to (it.value?.toString() ?: "unknown") }
-        .toMap()
+    val substitutionTokens =
+        rootProject.properties
+            .map { "project.${it.key}" to (it.value?.toString() ?: "unknown") }
+            .toMap()
     filter<ReplaceTokens>("tokens" to substitutionTokens)
 }
 

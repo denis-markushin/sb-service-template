@@ -1,4 +1,4 @@
 --liquibase formatted sql
 
---changeset template:initial-1_example
+--changeset author:id
 -- SOME SQL CODE HERE

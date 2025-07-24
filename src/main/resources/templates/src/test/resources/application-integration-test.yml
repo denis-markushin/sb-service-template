@@ -2,3 +2,7 @@ spring:
   cloud:
     config:
       enabled: false
+  datasource:
+    url: jdbc:tc:postgresql:17.5-alpine:///test-db
+  liquibase:
+    change-log: classpath:liquibase/changelog-master.yml

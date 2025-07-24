@@ -7,13 +7,24 @@ jooq = "3.18.9"
 spotless = "6.25.0"
 ktlint = "1.2.1"
 spring-doc = "2.3.0"
+mapstruct-core = "1.5.5.Final"
+mapstruct-spring-extensions = "1.1.1"
 
 [libraries]
 dema-platform = { module = "io.github.denis-markushin:bom", version.ref = "dema-platform" }
+
 spring-doc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-doc" }
+dema-jooq-utils = { module = "io.github.denis-markushin:jooq-utils", version.ref = "dema-platform" }
+
+# Map Struct related
+mapstruct-core = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct-core" }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct-core" }
+mapstruct-spring = { module = "org.mapstruct.extensions.spring:mapstruct-spring-annotations", version.ref = "mapstruct-spring-extensions" }
+mapstruct-spring-extensions = { module = "org.mapstruct.extensions.spring:mapstruct-spring-extensions", version.ref = "mapstruct-spring-extensions" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

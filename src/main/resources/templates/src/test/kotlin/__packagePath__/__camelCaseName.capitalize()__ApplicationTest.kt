@@ -2,13 +2,12 @@ package @packageName@
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
+import @packageName@.integration.AbstractIntegrationTest
 
-@Import(TestcontainersConfiguration::class)
 @SpringBootTest
 @ActiveProfiles("integration-test")
-class @camelCaseName.capitalize()@ApplicationTest {
+class @camelCaseName.capitalize()@ApplicationTest : AbstractIntegrationTest() {
     @Test
     fun contextLoads() {
     }
