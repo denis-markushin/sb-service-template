@@ -2,11 +2,11 @@ import com.orctom.gradle.archetype.ArchetypeGenerateTask
 
 plugins {
     id("com.orctom.archetype") version "2.0.0"
-    id("com.diffplug.spotless") version "6.25.0"
+    id("com.diffplug.spotless") version "7.2.1"
 }
 
 tasks.withType<ArchetypeGenerateTask>().configureEach {
-    dependsOn("installGitHooks")
+    dependsOn("spotlessInstallGitPrePushHook")
 
     extra["bindingProcessor"] = closureOf<MutableMap<String, Any?>> {
         val raw = this["name"] as String                // "my-service"
@@ -18,33 +18,16 @@ tasks.withType<ArchetypeGenerateTask>().configureEach {
 
 spotless {
     lineEndings = com.diffplug.spotless.LineEnding.UNIX
+
+    format("misc") {
+        target("**/gradlew", "**/gradlew.bat", ".gitignore")
+    }
+
     kotlin {
         target("**/*.kt")
     }
 }
 
-// Install pre-push hook
-tasks.register<Copy>("installGitHooks") {
-    description = "Install git hooks"
-    group = "build"
-
-    from("$rootDir/src/main/resources/templates/scripts")
-    into("$rootDir/.git/hooks")
-
-    filePermissions {
-        user {
-            read = true
-            write = true
-            execute = true
-        }
-        group {
-            read = true
-            write = true
-            execute = true
-        }
-        other {
-            read = true
-            execute = false
-        }
-    }
+tasks.named("spotlessInstallGitPrePushHook") {
+    onlyIf { !file(".git/hooks/pre-push").exists() }
 }

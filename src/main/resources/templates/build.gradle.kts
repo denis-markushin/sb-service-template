@@ -1,4 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
+import org.jetbrains.kotlin.gradle.internal.KaptGenerateStubsTask
 
 group = property("project.group") as String
 version = property("project.version") as String
@@ -7,6 +8,8 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.spring.boot)
+    alias(libs.plugins.jooq.codegen)
+    alias(libs.plugins.netflix.dgs.codegen)
     alias(libs.plugins.spotless)
     alias(libs.plugins.kapt)
 }
@@ -31,30 +34,40 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-autoconfigure")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-jooq")
 
     // spring cloud
     implementation("org.springframework.cloud:spring-cloud-starter-config")
+
+    // db
+    implementation("org.liquibase:liquibase-core")
+    runtimeOnly("org.postgresql:postgresql")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
 
     // third party libs
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation(libs.spring.doc)
     implementation(libs.dema.jooq.utils)
-    implementation(libs.mapstruct.core)
-    implementation(libs.mapstruct.spring)
+    implementation(libs.findbugs)
 
+    // mapstruct
+    implementation(libs.bundles.mapstruct)
     kapt(libs.mapstruct.processor)
     kapt(libs.mapstruct.spring.extensions)
 
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
-    runtimeOnly("org.postgresql:postgresql")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.boot:spring-boot-testcontainers")
+    // graphql
+    implementation("com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter")
     testImplementation("com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:postgresql")
+
+    // jooq
+    implementation("org.springframework.boot:spring-boot-starter-jooq")
+    implementation("org.jooq:jooq:${libs.versions.jooq.get()}")
+    jooqCodegen("org.jooq:jooq-meta-extensions-liquibase:${libs.versions.jooq.get()}")
+
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
+
+    testImplementation(libs.bundles.test)
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
@@ -78,13 +91,70 @@ spotless {
         target("**/*.kt")
         targetExclude("${layout.buildDirectory}/**/*.kt")
         ktlint(libs.versions.ktlint.get()).setEditorConfigPath(rootProject.file(".editorconfig").path)
-        toggleOffOn()
-        trimTrailingWhitespace()
     }
     kotlinGradle {
         target("*.gradle.kts")
         ktlint(libs.versions.ktlint.get())
     }
+}
+
+val dashedGroup = group.toString().replace("-", "")
+
+jooq {
+    configuration {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        generator {
+            database {
+                name = "org.jooq.meta.extensions.liquibase.LiquibaseDatabase"
+                properties.add(
+                    org.jooq.meta.jaxb.Property().withKey("rootPath")
+                        .withValue("${project.projectDir}/src/main/resources"),
+                )
+                properties.add(
+                    org.jooq.meta.jaxb.Property().withKey("scripts")
+                        .withValue("/liquibase/changelog-master.yml"),
+                )
+            }
+            generate {
+                isPojos = false
+                isDaos = false
+                isRecordsImplementingRecordN = false
+                isNullableAnnotation = true
+                isNonnullAnnotation = true
+                isValidationAnnotations = true
+            }
+            target {
+                directory = "${layout.buildDirectory.get()}/generated/jooq"
+                packageName = dashedGroup
+            }
+        }
+    }
+}
+
+tasks.generateJava {
+    packageName = dashedGroup
+    generateDocs = true
+    generateClient = true
+    generateBoxedTypes = true
+    snakeCaseConstantNames = true
+    addGeneratedAnnotation = true
+    generateKotlinNullableClasses = true
+    generateKotlinClosureProjections = true
+    typeMapping =
+        mutableMapOf(
+            "UUID" to "java.util.UUID",
+            "Base64" to "kotlin.String",
+            "Generated" to "javax.annotation.Generated",
+            "LocalDateTime" to "java.time.LocalDateTime",
+        )
+}
+
+tasks.compileKotlin {
+    dependsOn("jooqCodegen")
+}
+
+tasks.withType<KaptGenerateStubsTask> {
+    dependsOn("jooqCodegen")
 }
 
 tasks.processResources {
@@ -95,32 +165,10 @@ tasks.processResources {
     filter<ReplaceTokens>("tokens" to substitutionTokens)
 }
 
-// Install pre-push hook
-tasks.register<Copy>("installGitHooks") {
-    description = "Install git hooks"
-    group = "build"
-
-    from("$rootDir/scripts")
-    into("$rootDir/.git/hooks")
-
-    filePermissions {
-        user {
-            read = true
-            write = true
-            execute = true
-        }
-        group {
-            read = true
-            write = true
-            execute = true
-        }
-        other {
-            read = true
-            execute = false
-        }
-    }
+tasks.assemble {
+    dependsOn("spotlessInstallGitPrePushHook")
 }
 
-tasks.assemble {
-    dependsOn("installGitHooks")
+tasks.named("spotlessInstallGitPrePushHook") {
+    onlyIf { !file(".git/hooks/pre-push").exists() }
 }
