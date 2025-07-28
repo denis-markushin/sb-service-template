@@ -118,7 +118,7 @@ jooq {
                 properties {
                     property {
                         key = "liquibaseChangelogFile"
-                        value = "${projectDir}/src/main/resources/liquibase/changelog-master.yml"
+                        value = "$projectDir/src/main/resources/liquibase/changelog-master.yml"
                     }
                 }
             }
