@@ -1,3 +1,4 @@
 databaseChangeLog:
-  - include:
-      file: liquibase/scripts/initial.sql
+  - includeAll:
+      path: scripts
+      relativeToChangelogFile: true

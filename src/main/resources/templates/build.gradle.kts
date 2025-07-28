@@ -63,7 +63,7 @@ dependencies {
     // jooq
     implementation("org.springframework.boot:spring-boot-starter-jooq")
     implementation("org.jooq:jooq:${libs.versions.jooq.get()}")
-    jooqCodegen("org.jooq:jooq-meta-extensions-liquibase:${libs.versions.jooq.get()}")
+    jooqCodegen(libs.dema.jooq.liquibaseTestcontainers)
 
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
@@ -102,18 +102,25 @@ val dashedGroup = group.toString().replace("-", "")
 
 jooq {
     configuration {
-        logging = org.jooq.meta.jaxb.Logging.WARN
+        logging = org.jooq.meta.jaxb.Logging.DEBUG
+
+        jdbc {
+            driver = "org.testcontainers.jdbc.ContainerDatabaseDriver"
+            url = "jdbc:tc:postgresql:17.5-alpine:///test-db"
+        }
+
         generator {
             database {
-                name = "org.jooq.meta.extensions.liquibase.LiquibaseDatabase"
-                properties.add(
-                    org.jooq.meta.jaxb.Property().withKey("rootPath")
-                        .withValue("${project.projectDir}/src/main/resources"),
-                )
-                properties.add(
-                    org.jooq.meta.jaxb.Property().withKey("scripts")
-                        .withValue("/liquibase/changelog-master.yml"),
-                )
+                name = "org.dema.jooq.liquibase.LiquibasePostgresTcDatabase"
+                includes = ".*"
+                excludes = "databasechangelog|databasechangeloglock"
+                inputSchema = "public"
+                properties {
+                    property {
+                        key = "liquibaseChangelogFile"
+                        value = "${projectDir}/src/main/resources/liquibase/changelog-master.yml"
+                    }
+                }
             }
             generate {
                 isPojos = false
