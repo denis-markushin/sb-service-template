@@ -14,6 +14,8 @@ services:
       timeout: 5s
       start_period: 30s
       retries: 5
+    profiles:
+      - unused
 
   postgres:
     image: postgres:17.5
@@ -32,6 +34,8 @@ services:
       timeout: 5s
       start_period: 10s
       retries: 5
+    profiles:
+      - db
 
   zookeeper-kafka:
     image: confluentinc/cp-kafka:8.0.0
@@ -56,8 +60,22 @@ services:
       retries: 5
     depends_on:
       - zookeeper
-    labels:
-      amplicode.image: confluent/kafka
+    profiles:
+      - zookeeper-kafka
+
+  zookeeper:
+    image: zookeeper:3.9.3
+    restart: "no"
+    ports:
+      - "2181:2181"
+    healthcheck:
+      test: nc -z 127.0.0.1 2181 || exit -1
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+    profiles:
+      - zookeeper-kafka
 
   kraft-kafka:
     image: confluentinc/cp-kafka:8.0.0
@@ -84,17 +102,8 @@ services:
       timeout: 5s
       start_period: 30s
       retries: 5
-  zookeeper:
-    image: zookeeper:3.9.3
-    restart: "no"
-    ports:
-      - "2181:2181"
-    healthcheck:
-      test: nc -z 127.0.0.1 2181 || exit -1
-      interval: 10s
-      timeout: 5s
-      start_period: 10s
-      retries: 5
+    profiles:
+      - kraft-kafka
 
 volumes:
   postgres_data:

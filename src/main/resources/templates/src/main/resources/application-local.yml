@@ -4,6 +4,9 @@ spring:
       enabled: true
       lifecycle-management: start_only
       file: docker-compose.yml
+      profiles:
+        active:
+          - db
 #  security:
 #    oauth2:
 #      resource-server:
