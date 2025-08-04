@@ -1,5 +1,5 @@
 [versions]
-dema-platform = "0.0.4"
+dema-platform = "0.0.6-SNAPSHOT"
 
 kotlin = "1.9.24"
 spring-boot = "3.5.3"
@@ -16,6 +16,7 @@ dema-platform = { module = "io.github.denis-markushin:bom", version.ref = "dema-
 spring-doc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-doc" }
 dema-jooq-utils = { module = "io.github.denis-markushin:jooq-utils", version.ref = "dema-platform" }
 dema-jooq-liquibaseTestcontainers = { module = "io.github.denis-markushin:jooq-liquibase-testcontainer", version.ref = "dema-platform" }
+dema-graphql-starter = { module = "io.github.denis-markushin:graphql-dgs-starter", version.ref = "dema-platform" }
 
 # Map Struct related
 mapstruct-core = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }

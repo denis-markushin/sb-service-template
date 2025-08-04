@@ -1,0 +1,46 @@
+type Query {
+    users: UsersQueries
+}
+
+type UsersQueries {
+    """
+    Получить всех партнёров (пагинированный)
+    """
+    all(
+        "Кол-во запрашиваемых элементов"
+        first: Int! = 20
+        "Курсор"
+        after: String
+        "Правило сортировки"
+        sort: UsersSort! = CREATED_AT_DESC
+        "Фильтр"
+        filter: UsersFilter
+    ): UsersConnection
+}
+
+input UsersFilter {
+    "Поисковая строка"
+    query: String
+}
+
+type UsersConnection {
+    pageInfo: PageInfo!
+    edges: [UsersEdge!]!
+}
+
+type UsersEdge {
+    cursor: String!
+    node: User
+}
+
+type User {
+    id: ID
+    name: String
+}
+
+"""
+Правила сортировки
+"""
+enum UsersSort {
+    CREATED_AT_DESC
+}

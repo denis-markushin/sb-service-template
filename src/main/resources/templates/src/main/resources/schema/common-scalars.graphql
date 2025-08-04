@@ -1,0 +1,5 @@
+scalar LocalDateTime
+scalar UUID @specifiedBy(url: "https://tools.ietf.org/html/rfc4122")
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+scalar Base64
+scalar Date

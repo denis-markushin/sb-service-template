@@ -57,7 +57,7 @@ dependencies {
     kapt(libs.mapstruct.spring.extensions)
 
     // graphql
-    implementation("com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter")
+    implementation(libs.dema.graphql.starter)
     testImplementation("com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter-test")
 
     // jooq
@@ -131,7 +131,7 @@ jooq {
                 isValidationAnnotations = true
             }
             target {
-                directory = "${layout.buildDirectory.get()}/generated/jooq"
+                directory = "${layout.buildDirectory.get()}/generated/sources/jooq"
                 packageName = dashedGroup
             }
         }

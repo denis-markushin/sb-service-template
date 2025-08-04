@@ -1,4 +1,6 @@
 import com.orctom.gradle.archetype.ArchetypeGenerateTask
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 plugins {
     id("com.orctom.archetype") version "2.0.0"
@@ -9,11 +11,17 @@ tasks.withType<ArchetypeGenerateTask>().configureEach {
     dependsOn("spotlessInstallGitPrePushHook")
 
     extra["bindingProcessor"] = closureOf<MutableMap<String, Any?>> {
-        val raw = this["name"] as String                // "my-service"
-        val camel = raw.split('-', '_', ' ')
-            .joinToString("") { it.replaceFirstChar(Char::uppercase) }  // "MyService"
+        val raw = this["name"] as String // "my-service"
+        val camel = raw
+            .split('-', '_', ' ')
+            .joinToString("") { it.replaceFirstChar(Char::uppercase) } // "MyService"
         this["camelCaseName"] = camel
     }
+
+    System.setProperty(
+        "com.orctom.gradle.archetype.binding.date_yyyyMMddHHmm",
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm")),
+    )
 }
 
 spotless {
