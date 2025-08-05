@@ -24,4 +24,14 @@ abstract class AbstractIntegrationTest {
     fun cleanup() {
         TABLES_TO_CLEANUP.forEach { dsl.truncate(it).cascade().execute() }
     }
+
+    protected fun Collection<UpdatableRecord<*>>.store(): Collection<UpdatableRecord<*>> {
+        dsl.batchStore(this).execute()
+        return this
+    }
+
+    protected fun Array<UpdatableRecord<*>>.store(): Array<UpdatableRecord<*>> {
+        dsl.batchStore(*this).execute()
+        return this
+    }
 }

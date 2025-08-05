@@ -1,4 +1,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.internal.KaptGenerateStubsTask
 
 group = property("project.group") as String
@@ -83,10 +85,14 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    testLogging {
+        events(TestLogEvent.FAILED, TestLogEvent.SKIPPED)
+        showStandardStreams = false
+        exceptionFormat = TestExceptionFormat.FULL
+    }
 }
 
 spotless {
-    lineEndings = com.diffplug.spotless.LineEnding.UNIX
     kotlin {
         target("**/*.kt")
         targetExclude("${layout.buildDirectory}/**/*.kt")

@@ -24,7 +24,7 @@ class UsersService(
 ) {
     init {
         OrderByClausesMapping.register {
-            key(UsersSort.CREATED_AT_DESC).fields(USERS.CREATED_AT.desc())
+            key(UsersSort.CREATED_AT_DESC).fields(USERS.CREATED_AT.desc(), USERS.ID.asc())
         }
     }
 
