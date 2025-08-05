@@ -7,11 +7,3 @@ indent_size = 4
 indent_style = space
 insert_final_newline = false
 max_line_length = 140
-
-[{*.kt,*.kts}]
-ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL
-
-#  Disable wildcard imports entirely
-ij_kotlin_name_count_to_use_star_import = 2147483647
-ij_kotlin_name_count_to_use_star_import_for_members = 2147483647
-ij_kotlin_packages_to_use_import_on_demand = unset
