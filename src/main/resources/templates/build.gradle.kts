@@ -1,3 +1,4 @@
+import com.diffplug.spotless.LineEnding
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
@@ -93,6 +94,7 @@ tasks.withType<Test> {
 }
 
 spotless {
+    lineEndings = LineEnding.GIT_ATTRIBUTES_FAST_ALLSAME
     kotlin {
         target("**/*.kt")
         targetExclude("${layout.buildDirectory}/**/*.kt")
