@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset denis.markushin:init-schema
+--changeset <author>>:<id>
 create table users (
     id          uuid,
     full_name   text                    not null,
@@ -16,10 +16,10 @@ create table users (
 
 comment on table users is 'Users';
 
-comment on column users.id is 'primary id';
+comment on column users.id is 'Primary id';
 comment on column users.full_name is 'Full name';
-comment on column users.phone is 'mobile number';
-comment on column users.email is 'e-mail';
+comment on column users.phone is 'Mobile number';
+comment on column users.email is 'E-mail';
 
 -- Системные поля
 comment on column users.created_at is 'Date and time of creating a record';
