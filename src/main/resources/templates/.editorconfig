@@ -56,3 +56,8 @@ ktlint_standard_trailing-comma-on-call-site = disabled
 ktlint_standard_trailing-comma-on-declaration-site = disabled
 ktlint_standard_try-catch-finally-spacing = disabled
 ktlint_standard_wrapping = disabled
+
+[{*.yml,*.yaml}]
+indent_size = 2
+ij_yaml_keep_indents_on_empty_lines = false
+ij_yaml_keep_line_breaks = true
