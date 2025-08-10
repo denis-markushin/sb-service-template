@@ -1,7 +1,11 @@
 FROM eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /application
 COPY . .
-RUN --mount=type=cache,target=/root/.gradle chmod +x gradlew && ./gradlew clean build -x test
+
+ARG DOCKER_HOST
+ENV DOCKER_HOST=${DOCKER_HOST}
+
+RUN chmod +x gradlew && ./gradlew clean build
 
 FROM eclipse-temurin:21-jre-alpine AS layers
 WORKDIR /application

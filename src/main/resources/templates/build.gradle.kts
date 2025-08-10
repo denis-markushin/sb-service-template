@@ -189,3 +189,8 @@ tasks.assemble {
 tasks.named("spotlessInstallGitPrePushHook") {
     onlyIf { !file(".git/hooks/pre-push").exists() }
 }
+
+// to disable `-plain.jar`
+tasks.named<Jar>("jar") {
+    enabled = false
+}
