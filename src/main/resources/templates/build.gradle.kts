@@ -51,8 +51,10 @@ dependencies {
     // third party libs
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation(libs.spring.doc)
+    implementation(libs.dema.common.lib)
     implementation(libs.dema.jooq.utils)
     implementation(libs.findbugs)
+    implementation(libs.kotlin.logging)
 
     // mapstruct
     implementation(libs.bundles.mapstruct)
@@ -129,6 +131,12 @@ jooq {
                     property {
                         key = "liquibaseChangelogFile"
                         value = "$projectDir/src/main/resources/liquibase/changelog-master.yml"
+                    }
+                }
+                forcedTypes {
+                    forcedType {
+                        userType = "java.time.LocalDateTime"
+                        includeTypes = "(?i)(timestamp(\\(\\d+\\))?\\s*with\\s*time\\s*zone|timestamptz)"
                     }
                 }
             }

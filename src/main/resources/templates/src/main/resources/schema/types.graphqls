@@ -1,3 +1,5 @@
+type Query
+
 """
 Information about pagination in a connection.
 """
