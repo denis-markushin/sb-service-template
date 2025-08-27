@@ -11,7 +11,7 @@
 ### Batch Mode:
 
 ```bash
-gradle cleanArch generate -i -Dtarget=generated -Dgroup=com.xxx.yyy -Dname=dummy-service -Dversion=1.0.0-SNAPSHOT
+gradle cleanArch generate -i -Dtarget=generated -Dgroup=ru.easyway.efko -Dname=projects -Dversion=1.0.0-SNAPSHOT
 ```
 
 ### Parameters

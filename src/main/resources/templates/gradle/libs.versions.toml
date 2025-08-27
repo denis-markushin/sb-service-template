@@ -1,5 +1,5 @@
 [versions]
-dema-platform = "0.0.6-SNAPSHOT"
+dema-platform = "0.0.7"
 
 kotlin = "1.9.24"
 spring-boot = "3.5.3"
@@ -8,27 +8,29 @@ spotless = "7.2.1"
 ktlint = "1.7.1"
 spring-doc = "2.3.0"
 mapstruct = "1.5.5.Final"
-mapstruct-spring-extensions = "1.1.1"
+mapstruct-spring = "1.1.1"
 
 [libraries]
 dema-platform = { module = "io.github.denis-markushin:bom", version.ref = "dema-platform" }
 
 spring-doc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-doc" }
+dema-common-lib = { module = "io.github.denis-markushin:common-lib", version.ref = "dema-platform" }
 dema-jooq-utils = { module = "io.github.denis-markushin:jooq-utils", version.ref = "dema-platform" }
 dema-jooq-liquibaseTestcontainers = { module = "io.github.denis-markushin:jooq-liquibase-testcontainer", version.ref = "dema-platform" }
 dema-graphql-starter = { module = "io.github.denis-markushin:graphql-dgs-starter", version.ref = "dema-platform" }
 
 # Map Struct related
 mapstruct-core = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
-mapstruct-spring = { module = "org.mapstruct.extensions.spring:mapstruct-spring-annotations", version.ref = "mapstruct-spring-extensions" }
-mapstruct-spring-extensions = { module = "org.mapstruct.extensions.spring:mapstruct-spring-extensions", version.ref = "mapstruct-spring-extensions" }
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+mapstruct-spring-annotations = { module = "org.mapstruct.extensions.spring:mapstruct-spring-annotations", version.ref = "mapstruct-spring" }
+mapstruct-spring-extensions = { module = "org.mapstruct.extensions.spring:mapstruct-spring-extensions", version.ref = "mapstruct-spring" }
 
 findbugs = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version = "7.0.3" }
 
 # Test libs
 spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test" }
-kotlin-test-junit5 = { module = "org.springframework.boot:spring-boot-starter-test" }
+dema-test-common = { module = "io.github.denis-markushin:test-common", version.ref = "dema-platform" }
 
 assertk = { module = "com.willowtreeapps.assertk:assertk-jvm" }
 springmock = { module = "com.ninja-squad:springmockk" }
@@ -44,4 +46,4 @@ netflix-dgs-codegen = { id = "com.netflix.dgs.codegen", version = "6.0.3" }
 
 [bundles]
 mapstruct = ["mapstruct-core", "mapstruct-spring"]
-test = ["spring-boot-test", "kotlin-test-junit5", "assertk", "springmock"]
+test = ["spring-boot-test", "assertk", "springmock", "dema-test-common"]

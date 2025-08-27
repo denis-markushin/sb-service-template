@@ -1,0 +1,37 @@
+type @pascalCaseName@Query {
+    @camelCaseNamePlural@: @pascalCaseName@Queries
+}
+
+type @pascalCaseName@Queries {
+    byId(id: UUID!): @pascalCaseName@
+    all(
+        first: Int! = 20
+        after: String
+        sort: @pascalCaseName@Sort! = CREATED_AT_DESC
+        filter: @pascalCaseName@Filter
+    ): @pascalCaseName@Connection
+}
+
+input @pascalCaseName@Filter {
+    query: String
+}
+
+type @pascalCaseName@Connection {
+    pageInfo: PageInfo!
+    edges: [@pascalCaseName@Edge!]!
+}
+
+type @pascalCaseName@Edge {
+    cursor: String!
+    node: @pascalCaseName@
+}
+
+type @pascalCaseName@ {
+    id: UUID!
+    createdAt: LocalDateTime!
+    updatedAt: LocalDateTime!
+}
+
+enum @pascalCaseName@Sort {
+    CREATED_AT_DESC
+}
