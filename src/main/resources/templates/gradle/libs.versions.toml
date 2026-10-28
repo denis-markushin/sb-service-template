@@ -1,5 +1,6 @@
 [versions]
 dema-platform = "0.0.7"
+dema-jooq-liquibaseTestcontainers = "3.0.0"
 
 kotlin = "1.9.24"
 spring-boot = "3.5.3"
@@ -16,7 +17,7 @@ dema-platform = { module = "io.github.denis-markushin:bom", version.ref = "dema-
 spring-doc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-doc" }
 dema-common-lib = { module = "io.github.denis-markushin:common-lib", version.ref = "dema-platform" }
 dema-jooq-utils = { module = "io.github.denis-markushin:jooq-utils", version.ref = "dema-platform" }
-dema-jooq-liquibaseTestcontainers = { module = "io.github.denis-markushin:jooq-liquibase-testcontainer", version.ref = "dema-platform" }
+dema-jooq-liquibaseTestcontainers = { module = "io.github.denis-markushin:jooq-liquibase-testcontainer", version.ref = "dema-jooq-liquibaseTestcontainers" }
 dema-graphql-starter = { module = "io.github.denis-markushin:graphql-dgs-starter", version.ref = "dema-platform" }
 
 # Map Struct related

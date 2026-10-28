@@ -118,21 +118,15 @@ jooq {
 
         jdbc {
             driver = "org.testcontainers.jdbc.ContainerDatabaseDriver"
-            url = "jdbc:tc:postgresql:17.5-alpine:///test-db"
+            url = "jdbc:tc:liquibasepostgres:17.5-alpine:///test-db?changelog=$projectDir/src/main/resources/liquibase/changelog-master.yml"
         }
 
         generator {
             database {
-                name = "org.dema.jooq.liquibase.LiquibasePostgresTcDatabase"
+                name = "org.jooq.meta.postgres.PostgresDatabase"
                 includes = ".*"
                 excludes = "databasechangelog|databasechangeloglock"
                 inputSchema = "public"
-                properties {
-                    property {
-                        key = "liquibaseChangelogFile"
-                        value = "$projectDir/src/main/resources/liquibase/changelog-master.yml"
-                    }
-                }
                 forcedTypes {
                     forcedType {
                         userType = "java.time.LocalDateTime"
