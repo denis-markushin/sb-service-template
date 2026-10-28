@@ -40,8 +40,6 @@ fun String.toSnakeCase(): String = splitByWords().joinToString("_").uppercase()
 fun String.toScreamingSnakeCase(): String = toSnakeCase().uppercase()
 
 spotless {
-    lineEndings = com.diffplug.spotless.LineEnding.UNIX
-
     format("misc") {
         target("**/gradlew", "**/gradlew.bat", ".gitignore")
     }
